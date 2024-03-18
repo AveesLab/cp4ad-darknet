@@ -3,7 +3,7 @@
 ### 1. Object Detection using Darknet (CPU, GPU)
 ```
 $ git clone https://github.com/AveesLab/cp4ad-darknet.git
-$ cd darknet/
+$ cd cp4ad-darknet/
 $ wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights
 $ make -j6
 $ ./darknet detector demo cfg/coco.data cfg/yolov4-tiny.cfg yolov4-tiny.weights data/highway.mp4
