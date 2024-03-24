@@ -92,12 +92,10 @@ extern "C" {
 // ====================================================================
     image mat_to_image(cv::Mat mat);
     cv::Mat image_to_mat(image img);
-    // bool interest_class[80] = {true, false, true, false, false, false, false, false, false, false, false, false, false, false, false, true, false, }; // car, truck 0, 2, 15
 //    image ipl_to_image(mat_cv* src);
 //    mat_cv *image_to_ipl(image img);
 //    cv::Mat ipl_to_mat(IplImage *ipl);
 //    IplImage *mat_to_ipl(cv::Mat mat);
-    int interest_class = -1;
 
 
 extern "C" mat_cv *load_image_mat_cv(const char *filename, int flag)
@@ -906,8 +904,6 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
     try {
         cv::Mat *show_img = (cv::Mat*)mat;
         int i, j;
-        float G80_height = 1.444;
-        float focal_length = 130.0;
         if (!show_img) return;
         static int frame_id = 0;
         frame_id++;
@@ -916,18 +912,10 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
             char labelstr[4096] = { 0 };
             int class_id = -1;
             for (j = 0; j < classes; ++j) {
-                if (interest_class !=-1 && interest_class != j) {
-                    continue;
-                }
-                // if (interest_class[j] == false){
-                //     continue;
-                // }
-                else {
                 int show = strncmp(names[j], "dont_show", 9);
                 if (dets[i].prob[j] > thresh && show) {
                     if (class_id < 0) {
                         strcat(labelstr, names[j]);
-                        /// this //
                         class_id = j;
                         char buff[20];
                         if (dets[i].track_id) {
@@ -997,21 +985,19 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
 
                 float const font_size = show_img->rows / 1000.F;
                 cv::Size const text_size = cv::getTextSize(labelstr, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, 1, 0);
-                cv::Point pt1, pt2, pt_text, pt_distance, pt_text_bg1, pt_text_bg2, pt_distance_bg1, pt_distance_bg2;
+                cv::Point pt1, pt2, pt_text, pt_distance_bg1, pt_distance_bg2;
                 pt1.x = left;
                 pt1.y = top;
                 pt2.x = right;
                 pt2.y = bot;
                 pt_text.x = left;
                 pt_text.y = top - 4;// 12;
-                // DH's code ///////////////////////////////////////
-                pt_distance.x = left;
-                pt_distance.y = bot + 4;
-                pt_distance_bg1.x = left;
-                pt_distance_bg1.y = bot;
-                pt_distance_bg2.x = right;
-                pt_distance_bg2.y = bot + (3 + 18 * font_size);
-                ///////////////////////////////////////////////////
+                // Write code below. 
+                
+                
+
+
+
                 pt_text_bg1.x = left;
                 pt_text_bg1.y = top - (3 + 18 * font_size);
                 pt_text_bg2.x = right;
@@ -1021,9 +1007,7 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 color.val[0] = red * 256;
                 color.val[1] = green * 256;
                 color.val[2] = blue * 256;
-                // DH's code ///////////////////////////
-                D = G80_height * focal_length / (bot-top);
-                //////////////////////////////////////////
+                
                 // you should create directory: result_img
                 //static int copied_frame_id = -1;
                 //static IplImage* copy_img = NULL;
@@ -1047,22 +1031,12 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                     (float)left, (float)top, b.w*show_img->cols, b.h*show_img->rows);
                 else
                     printf("\n");
-                // std::string dist = cv::format("Distance : %f (m)", D);
-                // std::string track_str = cv::format("ID: %d", );
+                
                 cv::Scalar black_color = CV_RGB(0, 0, 0);
                 cv::rectangle(*show_img, pt_text_bg1, pt_text_bg2, color, width, 8, 0);
                 cv::rectangle(*show_img, pt_text_bg1, pt_text_bg2, color, CV_FILLED, 8, 0);    // filled
                 
                 cv::putText(*show_img, labelstr, pt_text, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
-                // // DH's code_Distance //
-                // cv::rectangle(*show_img, pt_distance_bg1, pt_distance_bg2, color, width, 8, 0);
-                // cv::rectangle(*show_img, pt_distance_bg1, pt_distance_bg2, color, CV_FILLED, 8, 0);
-                
-                // cv::putText(*show_img, dist, pt_distance, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
-                // // DH's code_Tracking //
-                // cv::rectangle(*show_img, pt_tracking_bg1, pt_tracking_bg2, color, width, 8, 0);
-                // cv::rectangle(*show_img, pt_tracking_bg1, pt_tracking_bg2, color, CV_FILLED, 8, 0);
-                // cv::putText(*show_img, )
                 
                 
                 // cv::FONT_HERSHEY_COMPLEX_SMALL, cv::FONT_HERSHEY_SIMPLEX
