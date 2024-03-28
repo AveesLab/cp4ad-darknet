@@ -78,6 +78,11 @@ using std::endl;
 #endif
 
 extern "C" {
+	// Practice 2. && Practice 3. && Practice 4.
+	// Write the code below
+
+	// Practice 4.
+	// Write the code below
 
     //struct mat_cv : cv::Mat {  };
     //struct cap_cv : cv::VideoCapture { };
@@ -902,11 +907,18 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
         if (!show_img) return;
         static int frame_id = 0;
         frame_id++;
+		// Practice 4.
+		// Write the code below.
+
+
 
         for (i = 0; i < num; ++i) {
             char labelstr[4096] = { 0 };
             int class_id = -1;
             for (j = 0; j < classes; ++j) {
+				// Practice 4.
+				// Write the code below.
+				
                 int show = strncmp(names[j], "dont_show", 9);
                 if (dets[i].prob[j] > thresh && show) {
                     if (class_id < 0) {
@@ -970,7 +982,10 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 if (top < 0) top = 0;
                 if (bot > show_img->rows - 1) bot = show_img->rows - 1;
 
-                //int b_x_center = (left + right) / 2;
+                // Practice 4.
+				// Write the code below
+
+				//int b_x_center = (left + right) / 2;
                 //int b_y_center = (top + bot) / 2;
                 //int b_width = right - left;
                 //int b_height = bot - top;
@@ -978,11 +993,17 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
 
                 float const font_size = show_img->rows / 1000.F;
                 cv::Size const text_size = cv::getTextSize(labelstr, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, 1, 0);
+				// Practice 4.
+				// Edit the code below and Write the code below
                 cv::Point pt1, pt2, pt_text, pt_text_bg1, pt_text_bg2;
-                pt1.x = left;
+
+				//////////////////////////////////////////////////////////////////////
+				pt1.x = left;
                 pt1.y = top;
                 pt2.x = right;
                 pt2.y = bot;
+				// Practice 1.
+				// Edit the code below
                 pt_text.x = left;
                 pt_text.y = top - 4;// 12;
                 pt_text_bg1.x = left;
@@ -990,6 +1011,17 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 pt_text_bg2.x = right;
                 if ((right - left) < text_size.width) pt_text_bg2.x = left + text_size.width;
                 pt_text_bg2.y = top;
+				/////////////////////////////////////////////////////////////////
+				// Practice 4.
+				// Write the code below
+
+
+
+
+
+
+
+
                 cv::Scalar color;
                 color.val[0] = red * 256;
                 color.val[1] = green * 256;
@@ -1023,7 +1055,16 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 cv::rectangle(*show_img, pt_text_bg1, pt_text_bg2, color, CV_FILLED, 8, 0);    // filled
                 cv::Scalar black_color = CV_RGB(0, 0, 0);
                 cv::putText(*show_img, labelstr, pt_text, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
-                // cv::FONT_HERSHEY_COMPLEX_SMALL, cv::FONT_HERSHEY_SIMPLEX
+              	// Practice 4.
+				// Write the code below
+				
+
+
+
+
+				////////////////////////////////////////////////////////////////////////
+
+				// cv::FONT_HERSHEY_COMPLEX_SMALL, cv::FONT_HERSHEY_SIMPLEX
             }
         }
         if (ext_output) {
