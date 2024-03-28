@@ -890,11 +890,6 @@ extern "C" void save_cv_jpg(mat_cv *img_src, const char *name)
 }
 // ----------------------------------------
 
-// DH's code //
-
-
-////////////////
-
 
 // ====================================================================
 // Draw Detection
@@ -933,12 +928,10 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                         printf(", %s: %.0f%% ", names[j], dets[i].prob[j] * 100);
                     }
                 }
-                }
             }
-
             if (class_id >= 0) {
-                
                 int width = std::max(1.0f, show_img->rows * .002f);
+
                 //if(0){
                 //width = pow(prob, 1./2.)*10+1;
                 //alphabet = 0;
@@ -950,7 +943,7 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 float green = get_color(1, offset, classes);
                 float blue = get_color(0, offset, classes);
                 float rgb[3];
-                float D;
+
                 //width = prob*20+2;
 
                 rgb[0] = red;
@@ -985,19 +978,13 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
 
                 float const font_size = show_img->rows / 1000.F;
                 cv::Size const text_size = cv::getTextSize(labelstr, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, 1, 0);
-                cv::Point pt1, pt2, pt_text, pt_distance_bg1, pt_distance_bg2;
+                cv::Point pt1, pt2, pt_text, pt_text_bg1, pt_text_bg2;
                 pt1.x = left;
                 pt1.y = top;
                 pt2.x = right;
                 pt2.y = bot;
                 pt_text.x = left;
                 pt_text.y = top - 4;// 12;
-                // Write code below. 
-                
-                
-
-
-
                 pt_text_bg1.x = left;
                 pt_text_bg1.y = top - (3 + 18 * font_size);
                 pt_text_bg2.x = right;
@@ -1007,7 +994,7 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 color.val[0] = red * 256;
                 color.val[1] = green * 256;
                 color.val[2] = blue * 256;
-                
+
                 // you should create directory: result_img
                 //static int copied_frame_id = -1;
                 //static IplImage* copy_img = NULL;
@@ -1031,14 +1018,11 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                     (float)left, (float)top, b.w*show_img->cols, b.h*show_img->rows);
                 else
                     printf("\n");
-                
-                cv::Scalar black_color = CV_RGB(0, 0, 0);
+
                 cv::rectangle(*show_img, pt_text_bg1, pt_text_bg2, color, width, 8, 0);
                 cv::rectangle(*show_img, pt_text_bg1, pt_text_bg2, color, CV_FILLED, 8, 0);    // filled
-                
+                cv::Scalar black_color = CV_RGB(0, 0, 0);
                 cv::putText(*show_img, labelstr, pt_text, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
-                
-                
                 // cv::FONT_HERSHEY_COMPLEX_SMALL, cv::FONT_HERSHEY_SIMPLEX
             }
         }

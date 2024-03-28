@@ -1,6 +1,5 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
-#define _CRT_SECURE_NO_WARNINGS
 #endif
 #include "utils.h"
 #include <stdio.h>
@@ -165,32 +164,7 @@ char *find_char_arg(int argc, char **argv, char *arg, char *def)
     }
     return def;
 }
-// DH's code //
-// int find_Arr_arg(int argc, char **argv, char *arg, int def[81])
-// {
-//     int i;
-//     char str;
-//     for (i = 0; i < 81; i++) {
-//         def[i] = -1;
-//     }
-//     for(i =0; i < argc-1; ++i) {
-//         if(!argv[i]) continue;
-//         if(0==strcmp(argv[i], arg)) {
-//             str = argv[i+1];
-//             int idx = 0;
-//             char *ptr = strtok(str, ",");
-//             while (ptr != NULL) {
-//                 def[idx] = atoi(ptr);
-//                 idx += 1
-//                 ptr = strtok(NULL, ",");
-//             } 
-//             del_arg(argc, argv, i);
-//             del_arg(argc, argv, i);
-//             break;
-//         }
-//     }
-//     return def[81];
-// }
+
 
 char *basecfg(char *cfgfile)
 {
