@@ -78,11 +78,9 @@ using std::endl;
 #endif
 
 extern "C" {
-	// Practice 2. && Practice 3. && Practice 4.
-	// Write the code below
-
-	// Practice 4.
-	// Write the code below
+	
+	// bool interest_classes[80] = {};
+	// float objects_height[80] = {};
 
     //struct mat_cv : cv::Mat {  };
     //struct cap_cv : cv::VideoCapture { };
@@ -909,16 +907,16 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
         frame_id++;
 		// Practice 4.
 		// Write the code below.
-
-
+		// float ;
+		// float ;
 
         for (i = 0; i < num; ++i) {
             char labelstr[4096] = { 0 };
             int class_id = -1;
             for (j = 0; j < classes; ++j) {
-				// Practice 4.
+				// Practice 2 & 3.
 				// Write the code below.
-				
+			    // if () continue;	
                 int show = strncmp(names[j], "dont_show", 9);
                 if (dets[i].prob[j] > thresh && show) {
                     if (class_id < 0) {
@@ -982,9 +980,6 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 if (top < 0) top = 0;
                 if (bot > show_img->rows - 1) bot = show_img->rows - 1;
 
-                // Practice 4.
-				// Write the code below
-
 				//int b_x_center = (left + right) / 2;
                 //int b_y_center = (top + bot) / 2;
                 //int b_width = right - left;
@@ -997,7 +992,7 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
 				// Edit the code below and Write the code below
                 cv::Point pt1, pt2, pt_text, pt_text_bg1, pt_text_bg2;
 
-				//////////////////////////////////////////////////////////////////////
+				///////////////////////////////////////////////////////////
 				pt1.x = left;
                 pt1.y = top;
                 pt2.x = right;
@@ -1011,14 +1006,15 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 pt_text_bg2.x = right;
                 if ((right - left) < text_size.width) pt_text_bg2.x = left + text_size.width;
                 pt_text_bg2.y = top;
-				/////////////////////////////////////////////////////////////////
+				/////////////////////////////////////////////////////////
 				// Practice 4.
 				// Write the code below
-
-
-
-
-
+				// pt_distance.x = ;
+				// pt_distance.y = ;
+				// pt_distance_bg1.x = ;
+				// pt_distance_bg1.y = ;
+				// pt_distance_bg2.x = ;
+				// pt_distance_bg2.y = ;
 
 
 
@@ -1050,15 +1046,20 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                     (float)left, (float)top, b.w*show_img->cols, b.h*show_img->rows);
                 else
                     printf("\n");
-
+				
                 cv::rectangle(*show_img, pt_text_bg1, pt_text_bg2, color, width, 8, 0);
                 cv::rectangle(*show_img, pt_text_bg1, pt_text_bg2, color, CV_FILLED, 8, 0);    // filled
                 cv::Scalar black_color = CV_RGB(0, 0, 0);
                 cv::putText(*show_img, labelstr, pt_text, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
               	// Practice 4.
 				// Write the code below
-				
-
+				// if () {
+				// Z = ;
+				// std::string dist = cv::format("", );
+				// cv::rectangle(*show_img, , , color, width, 8, 0);
+				// cv::rectangle(*show_img, , , color, CV_FILLED, 8, 0);
+				// cv::putText(*show_img, , , cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
+				// }
 
 
 
