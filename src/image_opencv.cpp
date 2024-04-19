@@ -79,8 +79,8 @@ using std::endl;
 
 extern "C" {
 	
-	// bool interest_classes[80] = {};
-	// float objects_height[80] = {};
+	 bool interest_classes[80] = {true, false, true, false, false, true,};
+	 float objects_height[80] = {0, 0, 1.444, 0, 0, 3.550, 0,};
 
     //struct mat_cv : cv::Mat {  };
     //struct cap_cv : cv::VideoCapture { };
@@ -907,8 +907,8 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
         frame_id++;
 		// Practice 4.
 		// Write the code below.
-		// float ;
-		// float ;
+		float Z;
+		float focal_length = 130.0;
 
         for (i = 0; i < num; ++i) {
             char labelstr[4096] = { 0 };
@@ -916,7 +916,7 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
             for (j = 0; j < classes; ++j) {
 				// Practice 2 & 3.
 				// Write the code below.
-			    // if () continue;	
+			    if (interest_classes[j] == false) continue;	
                 int show = strncmp(names[j], "dont_show", 9);
                 if (dets[i].prob[j] > thresh && show) {
                     if (class_id < 0) {
@@ -990,7 +990,7 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 cv::Size const text_size = cv::getTextSize(labelstr, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, 1, 0);
 				// Practice 4.
 				// Edit the code below and Write the code below
-                cv::Point pt1, pt2, pt_text, pt_text_bg1, pt_text_bg2;
+                cv::Point pt1, pt2, pt_text, pt_text_bg1, pt_text_bg2, pt_distance, pt_distance_bg1, pt_distance_bg2;
 
 				///////////////////////////////////////////////////////////
 				pt1.x = left;
@@ -1009,12 +1009,12 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
 				/////////////////////////////////////////////////////////
 				// Practice 4.
 				// Write the code below
-				// pt_distance.x = ;
-				// pt_distance.y = ;
-				// pt_distance_bg1.x = ;
-				// pt_distance_bg1.y = ;
-				// pt_distance_bg2.x = ;
-				// pt_distance_bg2.y = ;
+				pt_distance.x = left;
+				pt_distance.y = bot + 4;
+				pt_distance_bg1.x = left;
+				pt_distance_bg1.y = bot;
+				pt_distance_bg2.x = right;
+				pt_distance_bg2.y = bot + (3 + 18 * font_size);
 
 
 
@@ -1053,13 +1053,13 @@ extern "C" void draw_detections_cv_v3(mat_cv* mat, detection *dets, int num, flo
                 cv::putText(*show_img, labelstr, pt_text, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
               	// Practice 4.
 				// Write the code below
-				// if () {
-				// Z = ;
-				// std::string dist = cv::format("", );
-				// cv::rectangle(*show_img, , , color, width, 8, 0);
-				// cv::rectangle(*show_img, , , color, CV_FILLED, 8, 0);
-				// cv::putText(*show_img, , , cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
-				// }
+				if (objects_height != 0) {
+					Z = objects_height[class_id] * focal_length / (bot-top);
+				 	std::string dist = cv::format("Distance : %f (m)", Z);
+				 	cv::rectangle(*show_img, pt_distance_bg1, pt_distance_bg2 , color, width, 8, 0);
+					cv::rectangle(*show_img, pt_distance_bg1, pt_distance_bg2, color, CV_FILLED, 8, 0);
+					cv::putText(*show_img, dist, pt_distance, cv::FONT_HERSHEY_COMPLEX_SMALL, font_size, black_color, 2 * font_size, CV_AA);
+				 }
 
 
 

@@ -13,6 +13,7 @@ typedef layer convolutional_layer;
 extern "C" {
 #endif
 #ifdef GPU
+void my_gemm(int M, int N, int K, float* A_gpu, float* B_gpu, float* C_gpu, float ALPHA, float BETA);
 void forward_convolutional_layer_gpu(convolutional_layer layer, network_state state);
 void backward_convolutional_layer_gpu(convolutional_layer layer, network_state state);
 void update_convolutional_layer_gpu(convolutional_layer layer, int batch, float learning_rate, float momentum, float decay, float loss_scale);

@@ -594,7 +594,8 @@ void forward_convolutional_layer_gpu(convolutional_layer l, network_state state)
 
             }
             //gemm_ongpu(0, 0, m, n, k, 1., a, k, b, n, 1., c + i*m*n, n);
-            gemm_ongpu(0, 0, m, n, k, 1, a, k, b, n, 1, c, n);
+            //gemm_ongpu(0, 0, m, n, k, 1, a, k, b, n, 1, c, n);
+			my_gemm(m, n, k, a, b, c, 1, 1);
         }
     }
 
@@ -641,6 +642,28 @@ void forward_convolutional_layer_gpu(convolutional_layer l, network_state state)
     if (l.coordconv) {
         coord_conv_gpu(l.output_gpu, l.outputs*l.batch, l.out_w, l.out_h, l.out_c, l.batch, 0);
     }
+}
+
+__global__ void kernelGEMM(float* A, float* B, float* C, int M, int N, int K, float alpha, float beta) {
+	int gy = blockIdx.y * blockDim.y + threadIdx.y;
+	int gx = blockIdx.x * blockDim.x + threadIdx.x;
+	if (gy < M && gx < N) {
+		float sum = 0.0f;
+		for (int k = 0; k < K; ++k) {
+			int idxA = gy * K + k;
+			int idxB = k * N + gx;
+			sum += A[idxA] * B[idxB];
+		}
+		int idxC = gy * N + gx;
+		C[idxC] = alpha * sum + beta * C[idxC];
+	}
+}
+
+void my_gemm(int M, int N, int K, float* A_gpu, float* B_gpu, float* C_gpu, float ALPHA, float BETA) {
+	dim3 blockDim(32, 32, 1);
+	dim3 gridDim((N + blockDim.x - 1) / blockDim.x , (M + blockDim.y - 1) / blockDim.y, 1);
+	kernelGEMM<<<gridDim, blockDim>>>(A_gpu, B_gpu, C_gpu, M, N, K, ALPHA, BETA);
+	cudaDeviceSynchronize();
 }
 
 void backward_convolutional_layer_gpu(convolutional_layer l, network_state state)
